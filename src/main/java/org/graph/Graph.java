@@ -1,6 +1,7 @@
 package org.graph;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Graph {
     Map<Integer, List<Integer>> graph;
@@ -49,7 +50,64 @@ public class Graph {
         });
     }
 
-    public static void main(String[] args) {
+
+    /**
+     * Breadth first search traversal
+     * @param start
+     *
+     * 1. Create a queue and add the start node to it
+     * 2. Create a set of visited nodes
+     * 3. Start a loop while queue is not empty
+     * 4. Pop node from queue and visit all of the neighbouring nodes
+     * 5. If the node is visited continue, else add it to the queue.
+     */
+    public void bfs(int start) {
+        System.out.println("BFS");
+        Queue<Integer> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+        queue.add(start);
+        while(!queue.isEmpty()) {
+            int node = queue.poll();
+            if(visited.contains(node))
+                continue;
+            visited.add(node);
+            System.out.println("visiting " + node);
+            List<Integer> adjList = graph.get(node);
+            for (Integer adjNode : adjList) {
+                queue.add(adjNode);
+            }
+        }
+    }
+
+    /**
+     * Depth first search traversal
+     * @param start
+     *
+     * 1. Create a stack and add the start node to it
+     * 2. Create a set of visited nodes
+     * 3. Start a loop while stack is not empty
+     * 4. Pop node from stack and visit all of the neighbouring nodes
+     * 5. If the node is visited continue, else add it to the stack.
+     */
+    public void dfs(int start) {
+        System.out.println("DFS");
+        Stack<Integer> stack = new Stack<>();
+        Set<Integer> visited = new HashSet<>();
+        stack.add(start);
+        while(!stack.isEmpty()) {
+            int node = stack.pop();
+            if(visited.contains(node))
+                continue;
+            visited.add(node);
+            System.out.println("visiting " + node);
+            List<Integer> adjList = graph.get(node);
+            for (Integer adjNode : adjList) {
+                stack.add(adjNode);
+            }
+        }
+    }
+
+    public static void simpleGraph() {
         Graph graph = new Graph();
         graph.connect(1, 2);
         graph.connect(1, 3);
@@ -58,5 +116,51 @@ public class Graph {
         graph.connect(5, 4);
         graph.connect(3, 4);
         graph.traverse();
+        graph.bfs(1);
+        graph.dfs(1);
+    }
+
+    public static int provinceCount() {
+        Graph graph = new Graph();
+        graph.connect(1, 2);
+        graph.connect(1, 3);
+
+        graph.connect(5, 4);
+        graph.connect(5, 6);
+
+        graph.connect(7, 8);
+
+        Set<Integer> visited = new HashSet<>();
+        int provinceCount = 0;
+        for (Map.Entry<Integer, List<Integer>> entry : graph.graph.entrySet()) {
+            int node = entry.getKey();
+            Queue<Integer> queue = new LinkedList<>();
+            Set<Integer> province = new HashSet<>();
+            if(visited.contains(node))
+                continue;
+            queue.add(node);
+
+            while (!queue.isEmpty()) {
+                int vertex = queue.poll();
+                if(visited.contains(vertex))
+                    continue;
+                visited.add(vertex);
+                province.add(vertex);
+                List<Integer> vertList = graph.graph.get(vertex);
+                for (Integer adjNode : vertList) {
+                    queue.add(adjNode);
+                }
+            }
+            System.out.println(province);
+            province.clear();
+            provinceCount++;
+        }
+
+        return provinceCount;
+    }
+
+    public static void main(String[] args) {
+        //simpleGraph();
+        System.out.println(provinceCount());
     }
 }
