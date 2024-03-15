@@ -51,6 +51,7 @@ public class Graph {
     }
 
 
+    // https://www.youtube.com/watch?v=-tgVpUgsQ5k&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=5&pp=iAQB
     /**
      * Breadth first search traversal
      * @param start
@@ -79,6 +80,7 @@ public class Graph {
         }
     }
 
+    // https://www.youtube.com/watch?v=Qzf1a--rhp8&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=6&pp=iAQB
     /**
      * Depth first search traversal
      * @param start
@@ -120,6 +122,7 @@ public class Graph {
         graph.dfs(1);
     }
 
+    // https://www.youtube.com/watch?v=ACzkVtewUYA&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=7&pp=iAQB
     public static int provinceCount() {
         Graph graph = new Graph();
         graph.connect(1, 2);
@@ -159,8 +162,84 @@ public class Graph {
         return provinceCount;
     }
 
+    // https://www.youtube.com/watch?v=muncqlKJrH0&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=8
+    /**
+     *
+     * 1. Loop through the matrix
+     * 2. If found 1 add it to the queue
+     * 3. Traverse the queue while empty
+     * 4. Dequeue the queue element
+     * 5. Find unvisited neighbour and add it the queue
+     * 6. increment the count when the queue is empty
+     *
+     */
+
+    public static int islands(int[][] mat) {
+        Queue<MatNode> queue = new LinkedList<>();
+        Set<MatNode> visited = new HashSet<>();
+        int count = 0;
+
+        for(int i = 0; i < mat.length; i++) {
+            for(int j = 0; j < mat[0].length; j++) {
+
+                if(mat[i][j] == 0 || visited.contains(new MatNode(i, j)))
+                    continue;
+
+                MatNode start = new MatNode(i, j);
+                queue.add(start);
+                visited.add(start);
+                while (!queue.isEmpty()) {
+                    MatNode node = queue.poll();
+                    for(int row = node.row - 1; row <= node.row + 1; row++) {
+                        for(int col = node.col - 1; col <= node.col + 1; col++) {
+                            if((row < 0 || row >= mat.length || col < 0 || col >= mat[0].length))
+                                continue;
+                            if(mat[row][col] == 0)
+                                continue;
+                            MatNode mn = new MatNode(row, col);
+                            if(!visited.contains(mn)) {
+                                queue.add(mn);
+                                visited.add(mn);
+                            }
+                        }
+                    }
+
+                }
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+
+
     public static void main(String[] args) {
         //simpleGraph();
-        System.out.println(provinceCount());
+        //System.out.println(provinceCount());
+        System.out.println(islands(new int[][]{{0,1,1,0}, {0,1,1,0}, {0,0,1,0}, {0,0,0,0}, {1,1,0,1}}));
+    }
+}
+
+class MatNode {
+    int row;
+    int col;
+
+    public MatNode(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MatNode matNode = (MatNode) o;
+        return row == matNode.row && col == matNode.col;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, col);
     }
 }
