@@ -121,45 +121,7 @@ public class Graph {
         graph.dfs(1);
     }
 
-    // https://www.youtube.com/watch?v=ACzkVtewUYA&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=7&pp=iAQB
-    public static int provinceCount() {
-        Graph graph = new Graph();
-        graph.connect(1, 2);
-        graph.connect(1, 3);
 
-        graph.connect(5, 4);
-        graph.connect(5, 6);
-
-        graph.connect(7, 8);
-
-        Set<Integer> visited = new HashSet<>();
-        int provinceCount = 0;
-        for (Map.Entry<Integer, List<Integer>> entry : graph.graph.entrySet()) {
-            int node = entry.getKey();
-            Queue<Integer> queue = new LinkedList<>();
-            Set<Integer> province = new HashSet<>();
-            if(visited.contains(node))
-                continue;
-            queue.add(node);
-
-            while (!queue.isEmpty()) {
-                int vertex = queue.poll();
-                if(visited.contains(vertex))
-                    continue;
-                visited.add(vertex);
-                province.add(vertex);
-                List<Integer> vertList = graph.graph.get(vertex);
-                for (Integer adjNode : vertList) {
-                    queue.add(adjNode);
-                }
-            }
-            System.out.println(province);
-            province.clear();
-            provinceCount++;
-        }
-
-        return provinceCount;
-    }
 
     // https://www.youtube.com/watch?v=muncqlKJrH0&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=8
     /**
@@ -243,7 +205,8 @@ public class Graph {
 
     public static void main(String[] args) {
         //simpleGraph();
-        //System.out.println(provinceCount());
+        ProvinceCount pc = new ProvinceCount();
+        System.out.println(pc.provinceCount());
         System.out.println(islands(new int[][]{{0,1,1,0}, {0,1,1,0}, {0,0,1,0}, {0,0,0,0}, {1,1,0,1}}));
     }
 }
