@@ -49,7 +49,6 @@ public class Graph {
         });
     }
 
-
     // https://www.youtube.com/watch?v=-tgVpUgsQ5k&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=5&pp=iAQB
     /**
      * Breadth first search traversal
@@ -121,115 +120,7 @@ public class Graph {
         graph.dfs(1);
     }
 
-
-
-    // https://www.youtube.com/watch?v=muncqlKJrH0&list=PLgUwDviBIf0oE3gA41TKO2H5bHpPd7fzn&index=8
-    /**
-     *
-     * 1. Loop through the matrix
-     * 2. If found 1 add it to the queue
-     * 3. Traverse the queue while empty
-     * 4. Dequeue the queue element
-     * 5. Find unvisited neighbour and add it the queue
-     * 6. increment the count when the queue is empty
-     *
-     */
-
-    public static int islands(int[][] mat) {
-        Queue<MatNode> queue = new LinkedList<>();
-        Set<MatNode> visited = new HashSet<>();
-        int count = 0;
-
-        for(int i = 0; i < mat.length; i++) {
-            for(int j = 0; j < mat[0].length; j++) {
-
-                if(mat[i][j] == 0 || visited.contains(new MatNode(i, j)))
-                    continue;
-
-                MatNode start = new MatNode(i, j);
-                queue.add(start);
-                visited.add(start);
-                while (!queue.isEmpty()) {
-                    MatNode node = queue.poll();
-                    for(int row = node.row - 1; row <= node.row + 1; row++) {
-                        for(int col = node.col - 1; col <= node.col + 1; col++) {
-                            if((row < 0 || row >= mat.length || col < 0 || col >= mat[0].length))
-                                continue;
-                            if(mat[row][col] == 0)
-                                continue;
-                            MatNode mn = new MatNode(row, col);
-                            if(!visited.contains(mn)) {
-                                queue.add(mn);
-                                visited.add(mn);
-                            }
-                        }
-                    }
-
-                }
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    public static void floodFill(int[][] mat, int newColor, int sourceRow, int sourceCol) {
-        int n = mat.length;
-        int m = mat[0].length;
-        int[][] visited = new int[n][m];
-        Queue<MatNode> queue = new LinkedList<>();
-        int sourceColor = mat[sourceRow][sourceCol];
-        queue.add(new MatNode(sourceRow, sourceColor));
-        visited[sourceRow][sourceCol] = 1;
-        while (!queue.isEmpty()) {
-            MatNode node = queue.poll();
-            if(node.row - 1 >= 0 && mat[node.row - 1][node.col] == sourceCol && visited[node.row - 1][node.col] == 0)
-                queue.add(new MatNode(node.row - 1, node.col));
-            if(node.col - 1 >= 0 && mat[node.row][node.col - 1] == sourceCol && visited[node.row][node.col - 1] == 0)
-                queue.add(new MatNode(node.row, node.col - 1));
-            if(node.row + 1 < mat.length && mat[node.row + 1][node.col] == sourceCol && visited[node.row + 1][node.col] == 0)
-                queue.add(new MatNode(node.row + 1, node.col));
-            if(node.col + 1 < mat[0].length && mat[node.row][node.col + 1] == sourceCol && visited[node.row][node.col + 1] == 0)
-                queue.add(new MatNode(node.row, node.col + 1));
-        }
-        print(mat);
-    }
-
-    public static void print(int[][] mat) {
-        for(int i = 0; i < mat.length; i++) {
-            Arrays.toString(mat[i]);
-        }
-    }
-
-
-
     public static void main(String[] args) {
         //simpleGraph();
-        ProvinceCount pc = new ProvinceCount();
-        System.out.println(pc.provinceCount());
-        System.out.println(islands(new int[][]{{0,1,1,0}, {0,1,1,0}, {0,0,1,0}, {0,0,0,0}, {1,1,0,1}}));
-    }
-}
-
-class MatNode {
-    int row;
-    int col;
-
-    public MatNode(int row, int col) {
-        this.row = row;
-        this.col = col;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MatNode matNode = (MatNode) o;
-        return row == matNode.row && col == matNode.col;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(row, col);
     }
 }
