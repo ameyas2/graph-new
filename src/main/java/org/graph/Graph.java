@@ -1,7 +1,6 @@
 package org.graph;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Graph {
     Map<Integer, List<Integer>> graph;
@@ -210,6 +209,34 @@ public class Graph {
         }
 
         return count;
+    }
+
+    public static void floodFill(int[][] mat, int newColor, int sourceRow, int sourceCol) {
+        int n = mat.length;
+        int m = mat[0].length;
+        int[][] visited = new int[n][m];
+        Queue<MatNode> queue = new LinkedList<>();
+        int sourceColor = mat[sourceRow][sourceCol];
+        queue.add(new MatNode(sourceRow, sourceColor));
+        visited[sourceRow][sourceCol] = 1;
+        while (!queue.isEmpty()) {
+            MatNode node = queue.poll();
+            if(node.row - 1 >= 0 && mat[node.row - 1][node.col] == sourceCol && visited[node.row - 1][node.col] == 0)
+                queue.add(new MatNode(node.row - 1, node.col));
+            if(node.col - 1 >= 0 && mat[node.row][node.col - 1] == sourceCol && visited[node.row][node.col - 1] == 0)
+                queue.add(new MatNode(node.row, node.col - 1));
+            if(node.row + 1 < mat.length && mat[node.row + 1][node.col] == sourceCol && visited[node.row + 1][node.col] == 0)
+                queue.add(new MatNode(node.row + 1, node.col));
+            if(node.col + 1 < mat[0].length && mat[node.row][node.col + 1] == sourceCol && visited[node.row][node.col + 1] == 0)
+                queue.add(new MatNode(node.row, node.col + 1));
+        }
+        print(mat);
+    }
+
+    public static void print(int[][] mat) {
+        for(int i = 0; i < mat.length; i++) {
+            Arrays.toString(mat[i]);
+        }
     }
 
 
