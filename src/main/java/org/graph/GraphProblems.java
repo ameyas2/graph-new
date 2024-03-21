@@ -157,12 +157,6 @@ public class GraphProblems {
             if(node.col + 1 < mat[0].length && mat[node.row][node.col + 1] == sourceCol && visited[node.row][node.col + 1] == 0)
                 queue.add(new Location(node.row, node.col + 1));
         }
-        print(mat);
-    }
-
-    public static void print(int[][] mat) {
-        for(int i = 0; i < mat.length; i++) {
-            Arrays.toString(mat[i]);
-        }
+        Utils.print(mat);
     }
 }

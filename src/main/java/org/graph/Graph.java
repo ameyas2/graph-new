@@ -11,6 +11,10 @@ public class Graph {
         this.bidirectional = true;
     }
 
+    public List<Integer> get(int key) {
+        return this.graph.get(key);
+    }
+
     public Graph(boolean bidirectional) {
         this();
         this.bidirectional = bidirectional;
